@@ -42,10 +42,10 @@ module lado(lados=4, largo_exterior=200, ancho_lado=12.5, alto=3) {
         //-- hace los agujeros de los tercios
         for(i=[1:2]) {
             translate([(largo_exterior / 3) * i, 3, alto/2])
-                cylinder(alto * 2, d=agujero_tercios, center=true, $fn=30);
+                cylinder(alto, d1=agujero_tercios, d2=agujero_tercios*2, center=true, $fn=30);
 
             translate([_offset_lado_interior + (largo_lado_interior / 3) * i, ancho_lado - 3, alto/2])
-                cylinder(alto * 2, d=agujero_tercios, center=true, $fn=30);
+                cylinder(alto, d1=agujero_tercios, d2=agujero_tercios*2, center=true, $fn=30);
         }
     };
 }
