@@ -1,4 +1,18 @@
-lado();
+anillo(largo_exterior=200);
+anillo(largo_exterior=150);
+anillo(largo_exterior=100);
+anillo(largo_exterior=50);
+
+module anillo(lados=4, largo_exterior=100) {
+    for(i=[1:lados]) {
+        _angulo = 360 / (lados * 2);
+        _inradius = -largo_exterior / 2  * 1 / tan(_angulo);
+        /*_inradius = -largo_exterior / 2 ;*/
+        rotate(_angulo * 2 * i)
+            translate([-largo_exterior / 2, _inradius, 0])
+            lado(lados = lados, largo_exterior = largo_exterior);
+    }
+}
 
 module lado(lados=4, largo_exterior=200, ancho_lado=12.5, alto=3) {
     _angulo_esquina = 360 / lados / 2;
@@ -25,7 +39,7 @@ module lado(lados=4, largo_exterior=200, ancho_lado=12.5, alto=3) {
             cube([largo_exterior, ancho_lado, _alto_base]);
 
             translate([0, _offset_chanfle, _alto_base])
-            cube([largo_exterior, ancho_lado - _offset_chanfle * 2, alto - _alto_base]);
+                cube([largo_exterior, ancho_lado - _offset_chanfle * 2, alto - _alto_base]);
         }
 
         //-- corta las esquinas
