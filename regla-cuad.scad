@@ -1,24 +1,40 @@
-anillo(largo_exterior=200);
-anillo(largo_exterior=150);
-anillo(largo_exterior=100);
-anillo(largo_exterior=50);
+//-- a = lado exterio
 
+anillos = [50, 100, 150, 200];
+
+regla(values=anillos);
+
+module regla(lados=4, param="a", values=anillos ) {
+    for(a = anillos) {
+        anillo(largo_exterior=a);
+    }
+}
+
+/*//-- cuadrado*/
+/*anillo(largo_exterior=200);*/
+/*anillo(largo_exterior=150);*/
+/*anillo(largo_exterior=100);*/
+/*anillo(largo_exterior=50);*/
+
+//-- permitir pasar R y r, y calcular lo que haga falta
+//-- https://www.calculatorsoup.com/calculators/geometry-plane/polygon.php
+//-- dependiendo del poligono, pasamos un dato u otro
 module anillo(lados=4, largo_exterior=100) {
+    // divido asi para poder calcular los angulos con trigonometria
+    _angulo = 360 / (lados * 2);
+    // esta es el radio del circulo interior del poligono, lo uso para saber cuanto desplazarlo
+    _inradius = -largo_exterior / 2  * 1 / tan(_angulo);
     for(i=[1:lados]) {
-        _angulo = 360 / (lados * 2);
-        _inradius = -largo_exterior / 2  * 1 / tan(_angulo);
-        /*_inradius = -largo_exterior / 2 ;*/
         rotate(_angulo * 2 * i)
             translate([-largo_exterior / 2, _inradius, 0])
             lado(lados = lados, largo_exterior = largo_exterior);
     }
 }
 
-module lado(lados=4, largo_exterior=200, ancho_lado=12.5, alto=3) {
+module lado(lados=4, largo_exterior=200, ancho_lado=12.5, alto=2) {
     _angulo_esquina = 360 / lados / 2;
     _offset_lado_interior = ancho_lado * tan(_angulo_esquina);
     largo_lado_interior = largo_exterior - _offset_lado_interior * 2;
-
     //-- es el alto de la parte de abajo, donde corre el lapiz e inicia el chanfle
     _alto_base = 1;
 
