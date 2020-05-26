@@ -1,6 +1,6 @@
 include <reg-common.scad>;
 
-regla(ancho=200, lados=5, anillos=4);
+regla(ancho=150, lados=5, anillos=3);
 echo(valores()[0]);
 
 function valores(valor_base=200, lados=5) = 
