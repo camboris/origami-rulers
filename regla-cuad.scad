@@ -1,11 +1,14 @@
 include <reg-common.scad>;
+// pentagono
+ANCHO = 150;
+LADOS = 4;
+ANILLOS = 3;
+COEFICIENTE_LADO = 1;
 
-regla(ancho=200, lados=4, anillos=4);
-echo(valores()[0]);
+/* funciones especificas para esta figura */
 
-function valores(valor_base=200, lados=4) = 
-    let ( _angulo = 360 / (lados * 2) )
-    let (_a = valor_base)
-    let ( _inradius = valor_base / 2  * 1 / tan(_angulo))
-    [_angulo, _a, _inradius];
+function get_angulo(lados=LADOS) = (360 / lados);
+function get_largo_lado(valor_base, coeficiente_lado=COEFICIENTE_LADO) = ( valor_base * coeficiente_lado ); 
+function get_inradius(largo_lado) = (largo_lado / 2);
 
+regla(ancho=ANCHO, lados=LADOS, anillos=ANILLOS);
