@@ -10,37 +10,43 @@ DIAM_TERCIOS = 2;
 //-- define cuanto es ancho del chanfle del borde
 OFFSET_CHANFLE = 5;
 
+
+// Conectores
+
 ANCHO_CONECTOR = 3;
 SEPARACION_CONECTOR = 1;
+
+// grosor del anillo
+ANCHO_LADO = 12.5;
 
 module regla(lados=4, ancho=200, anillos = 4) {
     _dif_anillos = ancho / anillos;
     _sep_anillos = get_inradius(get_largo_lado(ancho)) / anillos;
-    echo("regla - ancho", ancho);
-    echo("regla - inadios", get_inradius(get_largo_lado(ancho)));
-    echo("regla - anillos", anillos);
-    echo("regla - sep", _sep_anillos);
-    
+    echo("Regla Ancho:", ancho, " Anillos: ", anillos, "Separacion: ", _sep_anillos);
+
     for(i=[1:anillos]) {
         if(i > 1) {
-          anillo(valor_base=i * _dif_anillos,
+          anillo(
+            num_anillo=i,
+            valor_base=i * _dif_anillos,
             lados=lados,
             ancho_separacion =_sep_anillos);
         } else {
-          anillo(valor_base=i * _dif_anillos,
+          anillo(
+            num_anillo=i,
+            valor_base=i * _dif_anillos,
             lados=lados,
-            ancho_separacion = 0); 
+            ancho_separacion = 0);
         }
     }
 }
 
-module anillo(lados=4, valor_base=200, ancho_separacion=50) {
-    echo("anillo", lados, valor_base);
+module anillo(num_anillo, lados=4, valor_base=200, ancho_separacion=50) {
+    // echo("anillo", lados, valor_base);
     _angulo = get_angulo(lados) / 2;
     _largo_lado = get_largo_lado(valor_base);
     _inradius = get_inradius(_largo_lado);
-    echo("anillo - largo lado", _largo_lado);
-    echo("anillo - inradios", _inradius);
+    echo("Anillo ", num_anillo, "largo externo:", _largo_lado, " interno: ", largoLadoInterior(ANCHO_LADO, _angulo, _largo_lado), " desplazamiento: ", _inradius);
     for(i=[1:lados]) {
         rotate(_angulo * 2 * i)
             translate([-_largo_lado / 2, -_inradius, 0])
@@ -51,10 +57,12 @@ module anillo(lados=4, valor_base=200, ancho_separacion=50) {
     }
 }
 
+function largoLadoInterior(ancho_lado, angulo_esquina, largo_lado) = largo_lado - ancho_lado * tan(angulo_esquina) * 2;
+
 module lado(angulo_esquina = 45, largo_lado=200, ancho_lado=12.5, alto=2, largo_union=10) {
     _angulo_esquina = angulo_esquina;
     _offset_lado_interior = ancho_lado * tan(_angulo_esquina);
-    largo_lado_interior = largo_lado - _offset_lado_interior * 2;
+    largo_lado_interior =largoLadoInterior(ancho_lado, angulo_esquina, largo_lado);
 
     _corte_esquina = ancho_lado * 2;
 
